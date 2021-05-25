@@ -9,6 +9,7 @@ function _VOS_SCRLL_EL(element) {
   this.el = element;
   this.top = element.scrollTop || element.offsetTop;
   this.left = element.scrollLeft || element.offsetLeft;
+  this.height = element.offsetHeight;
 }
 
 let __VOS = {
@@ -41,10 +42,11 @@ let __VOS = {
   visiblilityController: function () {
     this.addEvent(window, "scroll", function () {
       const scrollPosY = window.pageYOffset || window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
-      const element = __VOS.scrollEls.filter(scrollElObj => scrollElObj.top > (scrollPosY - 10));
-      const docHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
-      __VOS.showEl(element[0].el);
-      element[0].el.setAttribute('__vos_seen', 'shown');
+      const element = __VOS.scrollEls.filter(scrollElObj => scrollElObj.top > scrollPosY);
+      if (element[0]) {
+        __VOS.showEl(element[0].el);
+        element[0].el.setAttribute('__vos_seen', 'shown');
+      }
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         for (let i = 0; i < __VOS.scrollEls.length; i++) {
           const element = __VOS.scrollEls[i].el;
@@ -66,7 +68,6 @@ let __VOS = {
 
   executeForClass: function () {
     this.executeEl.referenceIdOrClass = this.executeEl.referenceIdOrClass.replace(".", "");
-    console.log(this.executeEl.referenceIdOrClass);
     const allElements = document.getElementsByClassName(this.executeEl.referenceIdOrClass);
     for (let i = 0; i < allElements.length; i++) {
       this.scrollEls.push(new _VOS_SCRLL_EL(allElements[i]));
