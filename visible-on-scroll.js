@@ -1,3 +1,8 @@
+/** 
+ Free to use
+ visible on scroll by @kushalcodes
+ **/
+
 // Visible On Scroll (VOS)
 function _VOS(element, options) {
   this.el = element;
